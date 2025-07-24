@@ -1,12 +1,13 @@
 local user = "DaPiMasta131"
 local repo = "Scrawl"
-local url = "https://api.github.com/repos/" .. user .."/" .. repo
+local url = "https://github.com/" .. user .. "/" .. repo
+local api_url = "https://api.github.com/repos/" .. user .."/" .. repo
 local branch = "main"
 
 local function update()
   local response, version, err, data, sha, file
   version = settings.get("git.version")
-  response, err = http.get(url .. "/commits/" .. branch)
+  response, err = http.get(api_url .. "/commits/" .. branch)
   if not response then error(err) end
   data = textutils.unserializeJSON(response.readAll())
   response.close()
@@ -19,7 +20,7 @@ local function update()
     response.close()
     -- process data as a diff
   else
-    response, err = http.get(url .. "/git/trees/" .. branch .. "?recursive=1")
+    response, err = http.get(api_url .. "/git/trees/" .. branch .. "?recursive=1")
     if not response then error(err) end
     data = textutils.unserializeJSON(response.readAll())
     response.close()
